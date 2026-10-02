@@ -1,6 +1,6 @@
 # Purple Octopus — Digital Marketing Agency
 
-A frontend-only React/Vite concept for a motion-heavy digital marketing agency.
+React/Vite website and Express/MongoDB API for a digital marketing agency.
 
 ## Stack
 - React
@@ -10,20 +10,42 @@ A frontend-only React/Vite concept for a motion-heavy digital marketing agency.
 - Lucide icons
 - CSS responsive layout
 
+## Project structure
+
+- `frontend/` — React, Vite, styles, and static assets
+- `backend/` — Express API, MongoDB models, and database configuration
+
+The root `package.json` provides scripts for both workspaces.
+
 ## Run
+
+Install dependencies from the project root:
+
 ```bash
 npm install
 npm run dev
 ```
 
-Then open the local Vite URL.
+The frontend runs at the local Vite URL. In a second terminal, start the API:
 
-## Backend-ready
-The current site is intentionally frontend-only. When you add the MERN backend later:
-- Move contact form handling to Express.
-- Store leads/projects in MongoDB.
-- Add CMS/admin APIs for work and case studies.
-- Replace the hard-coded `services` and `work` arrays with API data.
+```bash
+npm run server
+```
+
+## Backend
+
+The Express and MongoDB API lives in `backend/`.
+
+1. Copy `backend/.env.example` to `backend/.env` and set `MONGODB_URI` to a local MongoDB or MongoDB Atlas connection string.
+2. Run `npm run server` to start the API at `http://localhost:5000`.
+
+Available endpoints:
+
+- `GET /api/health` — API and database connection status
+- `GET /api/projects` — portfolio projects stored in MongoDB
+- `POST /api/inquiries` — create a contact enquiry
+
+`POST /api/inquiries` accepts `name`, `email`, and `message`, with optional `company` and `service` fields.
 
 ## Media
 The demo uses Pexels-hosted stock imagery/video. Pexels states that its photos/videos can be used for free, including commercial websites, without required attribution, subject to its license and terms. See:
