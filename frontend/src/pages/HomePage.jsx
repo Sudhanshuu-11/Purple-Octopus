@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Facebook, Play, Sparkles, Menu, X, Instagram, Linkedin, Twitter } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Play, Sparkles, Menu, X, Instagram, Linkedin, Twitter } from "lucide-react";
 import heroVideo from "../assets/hero.mp4";
 import logoImage from "../assets/icon.png";
 import { getProjects } from "../app/api.js";
@@ -20,6 +20,13 @@ const MEDIA = {
   desk: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1400",
   portrait: "https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=1000",
   campaign: "https://images.pexels.com/photos/38862869/pexels-photo-38862869.jpeg"
+};
+
+const formatFollowers = (value) => {
+  const count = Number(value);
+  if (!Number.isFinite(count)) return value;
+  if (count < 1000) return count.toLocaleString();
+  return `${(count / 1000).toFixed(1).replace(/\.0$/, "")}k`;
 };
 
 function Reveal({ children, className = "", delay = 0 }) {
@@ -167,7 +174,7 @@ export default function HomePage() {
           <Reveal className="section-kicker">/ WHO WE ARE</Reveal>
           <Reveal><h2 className="huge">We turn attention<br />into <em>action.</em></h2></Reveal>
           <div className="intro-bottom">
-            <Reveal><div className="lead"><p>We’re Sudhanshu and Avinash, the founders of Purple Octopus. We started this digital marketing agency to help ambitious brands find their voice, connect with the right people and grow with purpose.</p><p>From social media and content to search and performance campaigns, we bring strategy, creative and data together. We shape clear plans, make useful and memorable work, then keep learning from the results so every next move works harder for the business.</p></div></Reveal>
+            <Reveal><div className="lead"><p>We’re <strong className="founder-name">Sudhanshu</strong> and <strong className="founder-name">Avinash</strong>, the founders of <span className="purple-gradient-text">Purple Octopus</span>. We started this digital marketing agency to help ambitious brands find their voice, connect with the right people and grow with purpose.</p><p>From social media and content to search and performance campaigns, we bring strategy, creative and data together. We shape clear plans, make useful and memorable work, then keep learning from the results so every next move works harder for the business.</p></div></Reveal>
             <Reveal delay=".12"><img className="parallax-img rounded" src={MEDIA.team} alt="Creative team collaborating" /></Reveal>
           </div>
         </section>
@@ -212,21 +219,16 @@ export default function HomePage() {
             </div>
             <div className="work-track" ref={workScroller}>
               {work.map((item, i) => {
-                const PlatformIcon = item.platform === "Facebook" ? Facebook : item.platform === "LinkedIn" ? Linkedin : Instagram;
-                const platform = item.platform || "Instagram";
                 return <article className="work-card" key={item._id || `${item.client}-${i}`}>
                   <div className="instagram-profile">
-                    <img className="instagram-avatar" src={item.avatar} alt={`${item.client} profile`} />
-                    <div><strong>{item.handle}</strong><span>{item.client} · {platform}</span></div>
+                    <img className="instagram-avatar" src={item.avatar} alt={`${item.client} avatar`} />
+                    <div><strong>{item.client}</strong><span>{item.handle}</span></div>
                     {item.profileUrl && <a className="work-profile-link" href={item.profileUrl} target="_blank" rel="noreferrer">View ↗</a>}
                   </div>
-                  <div className="work-image"><img className="parallax-img" src={item.image} alt={`${item.client} campaign`} /><span>{String(i + 1).padStart(2, "0")}</span></div>
+                  <div className="work-image"><img className="parallax-img" src={item.image} alt={`${item.client} profile picture`} /></div>
                   <div className="instagram-stats">
-                    {item.posts && <span><strong>{Number(item.posts).toLocaleString()}</strong> posts</span>}
-                    <span><strong>{Number(item.followers).toLocaleString()}</strong> followers</span>
-                    {item.metric && <span><strong>{item.metric}</strong> growth</span>}
+                    <span><strong>{formatFollowers(item.followers)}</strong> followers</span>
                   </div>
-                  <div className="work-meta"><div><small>{item.type}</small><h3>{item.client}</h3><p>{item.bio}</p></div><PlatformIcon className="work-platform-icon" size={22} aria-label={platform} /></div>
                 </article>;
               })}
               {workStatus === "loading" && <p className="work-empty" role="status">Loading profiles…</p>}

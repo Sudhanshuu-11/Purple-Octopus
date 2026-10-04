@@ -386,6 +386,14 @@ em {
     max-width: 620px
 }
 
+.lead .founder-name {
+    font-weight: 600;
+}
+
+.lead .purple-gradient-text {
+    color: #4b176f;
+}
+
 .rounded {
     border-radius: 20px;
     width: 100%;

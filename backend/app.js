@@ -8,7 +8,10 @@ import projectsRouter from "./routes/projects.js";
 
 const app = express();
 const backendDirectory = path.dirname(fileURLToPath(import.meta.url));
-const allowedOrigins = process.env.CLIENT_ORIGIN?.split(",").map((origin) => origin.trim()).filter(Boolean);
+const configuredOrigins = process.env.CLIENT_ORIGIN?.split(",").map((origin) => origin.trim()).filter(Boolean) || [];
+const allowedOrigins = process.env.NODE_ENV === "production"
+  ? configuredOrigins
+  : [...new Set([...configuredOrigins, "http://localhost:5173", "http://127.0.0.1:5173"])];
 
 app.use(cors({ origin: allowedOrigins?.length ? allowedOrigins : true }));
 app.use(express.json({ limit: "100kb" }));
